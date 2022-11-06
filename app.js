@@ -10,9 +10,10 @@ const app = express();
 
 mongoose
   .connect(
-    'mongodb+srv://max:' +
+    'mongodb+srv://dbUser:' +
       process.env.MONGO_ATLAS_PW +
-      '@cluster0-ntrwp.mongodb.net/node-angular'
+      '@testcluster.06lsona.mongodb.net/?retryWrites=true&w=majority',
+    { useNewUrlParser: true }
   )
   .then(() => {
     console.log('Connected to database!');
