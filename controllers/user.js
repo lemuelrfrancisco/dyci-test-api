@@ -30,7 +30,7 @@ exports.createUser = (req, res, next) => {
 };
 
 exports.userLogin = (req, res, next) => {
-  res.header('Access-Control-Allow-Methods', 'POST');
+  // res.header('Access-Control-Allow-Methods', 'POST');
   let fetchedUser;
   User.findOne({ email: req.body.email })
     .then((user) => {
@@ -57,7 +57,7 @@ exports.userLogin = (req, res, next) => {
         process.env.JWT_KEY,
         { expiresIn: '3h' }
       );
-      res.header('token', token);
+      // res.header('token', token);
       res.status(200).json({
         token: token,
         userId: fetchedUser._id,
