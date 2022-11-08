@@ -53,10 +53,6 @@ exports.userLogin = (req, res, next) => {
           {
             userId: fetchedUser._id,
             email: fetchedUser.email,
-            firstName: fetchedUser.firstName,
-            middleName: fetchedUser.middleName,
-            lastName: fetchedUser.lastName,
-            contactNo: fetchedUser.contactNo,
           },
           process.env.JWT_KEY,
           { expiresIn: '24h' }
@@ -65,6 +61,11 @@ exports.userLogin = (req, res, next) => {
           token: token,
           expiresIn: 3600 * 24,
           userId: fetchedUser._id,
+          email: fetchedUser.email,
+          firstName: fetchedUser.firstName,
+          middleName: fetchedUser.middleName,
+          lastName: fetchedUser.lastName,
+          contactNo: fetchedUser.contactNo,
         });
       }
     })
