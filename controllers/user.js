@@ -30,13 +30,12 @@ exports.createUser = (req, res, next) => {
 };
 
 exports.userLogin = (req, res, next) => {
-  res.header('Access-Control-Allow-Methods', 'POST');
   let fetchedUser;
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         return res.status(401).json({
-          message: 'Auth failed. Incorrect Email or password.',
+          message: 'Auth failed',
         });
       }
       fetchedUser = user;
@@ -49,23 +48,19 @@ exports.userLogin = (req, res, next) => {
         });
       }
       const token = jwt.sign(
-        {
-          email: fetchedUser.email,
-          userId: fetchedUser._id,
-        },
+        { email: fetchedUser.email, userId: fetchedUser._id },
         process.env.JWT_KEY,
-        { expiresIn: '3h' }
+        { expiresIn: '24h' }
       );
-      res.header('token', token);
       res.status(200).json({
         token: token,
+        expiresIn: 3600 * 24,
         userId: fetchedUser._id,
-        expiresIn: 10800,
       });
     })
     .catch((err) => {
       return res.status(401).json({
-        message: 'Auth failed. Incorrect Email or password.',
+        message: 'Invalid authentication credentials!',
       });
     });
 };
