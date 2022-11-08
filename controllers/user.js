@@ -42,25 +42,26 @@ exports.userLogin = (req, res, next) => {
       return bcrypt.compare(req.body.password, user.password);
     })
     .then((result) => {
-      console.log(result);
+      console.log(fetchedUser);
       if (!result) {
         return res.status(401).json({
           message: 'Auth failed',
         });
       }
-      const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id },
-        process.env.JWT_KEY,
-        { expiresIn: '24h' }
-      );
-      res.status(200).json({
-        token: token,
-        expiresIn: 3600 * 24,
-        userId: fetchedUser._id,
-      });
+      if (result && fetchedUser) {
+        const token = jwt.sign(
+          { email: fetchedUser.email, userId: fetchedUser._id },
+          process.env.JWT_KEY,
+          { expiresIn: '24h' }
+        );
+        res.status(200).json({
+          token: token,
+          expiresIn: 3600 * 24,
+          userId: fetchedUser._id,
+        });
+      }
     })
     .catch((err) => {
-      console.log(err);
       return res.status(401).json({
         message: 'Invalid authentication credentials!',
       });
