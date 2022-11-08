@@ -48,7 +48,7 @@ exports.userLogin = (req, res, next) => {
           message: 'Auth failed',
         });
       }
-      if (result && fetchedUser) {
+      if (fetchedUser) {
         const token = jwt.sign(
           { email: fetchedUser.email, userId: fetchedUser._id },
           process.env.JWT_KEY,
