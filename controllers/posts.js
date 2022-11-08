@@ -6,7 +6,7 @@ exports.createPost = (req, res, next) => {
     title: req.body.title,
     content: req.body.content,
     imagePath: url + '/images/' + req.file.filename,
-    creator: req.userData.userId,
+    user: req.userData.userId,
   });
   post
     .save()
@@ -62,7 +62,17 @@ exports.updatePost = (req, res, next) => {
 exports.getPosts = (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
-  const postQuery = Post.find();
+  const postQuery = Post.find().populate('user');
+  // .aggregate([
+  //   {
+  //     $lookup: {
+  //       from: 'users',
+  //       localField: 'creator',
+  //       foreignField: '_id',
+  //       as: 'userInfo',
+  //     },
+  //   },
+  // ]);
   let fetchedPosts;
   if (pageSize && currentPage) {
     postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
@@ -80,6 +90,7 @@ exports.getPosts = (req, res, next) => {
       });
     })
     .catch((error) => {
+      console.log(error);
       res.status(500).json({
         message: 'Fetching posts failed!',
       });
@@ -88,6 +99,7 @@ exports.getPosts = (req, res, next) => {
 
 exports.getPost = (req, res, next) => {
   Post.findById(req.params.id)
+    .populate('user')
     .then((post) => {
       if (post) {
         res.status(200).json(post);
