@@ -42,6 +42,8 @@ exports.updatePost = (req, res, next) => {
     content: req.body.content,
     imagePath: imagePath,
     creator: req.userData.userId,
+    latitude: req.body.latitude ? req.body.latitude : '',
+    longitude: req.body.longitude ? req.body.longitude : '',
   });
   Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
     // Post.updateOne({ _id: req.params.id }, post)
