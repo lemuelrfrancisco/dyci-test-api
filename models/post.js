@@ -9,6 +9,8 @@ const postSchema = mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  latitude: { type: String, required: false },
+  longitude: { type: String, required: false },
 });
 
 module.exports = mongoose.model('Post', postSchema);

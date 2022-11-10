@@ -7,6 +7,8 @@ exports.createPost = (req, res, next) => {
     content: req.body.content,
     imagePath: url + '/images/' + req.file.filename,
     user: req.userData.userId,
+    latitude: req.body.latitude ? req.body.latitude : '',
+    longitude: req.body.longitude ? req.body.longitude : '',
   });
   post
     .save()
